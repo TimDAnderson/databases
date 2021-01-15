@@ -30,9 +30,9 @@ var FormView = {
 
     // var message = {
     //   username: 'Mel Brooks',
-    //   text: 'It\'s good to be the king',
-    //   roomname: 'lobby'
-    // };
+  //   text: 'It\'s good to be the king',
+  //   roomname: 'lobby'
+  // };
 
     var message = {
       username: ourUserName,

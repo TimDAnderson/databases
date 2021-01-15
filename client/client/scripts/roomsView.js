@@ -18,12 +18,12 @@ var RoomsView = {
       roomSet.add(array[i].roomname);
     }
     console.log(roomSet);
-    //iterate over the set and send those off to roomsView.renderRoom
-    for (var room of roomSet) {
-      console.log(room);
-      var myObj = {'room': room};
-      RoomsView.renderRoom(myObj);
-    }
+      //iterate over the set and send those off to roomsView.renderRoom
+      for (var room of roomSet) {
+        console.log(room);
+        var myObj = {'room': room};
+        RoomsView.renderRoom(myObj);
+      }
 
   },
 
