@@ -11,7 +11,6 @@ describe('Persistent Node Chat Server', function() {
   beforeEach(function(done) {
     dbConnection = mysql.createConnection({
       user: 'root',
-      password: '',
       database: 'chat'
     });
     dbConnection.connect();
@@ -26,15 +25,18 @@ describe('Persistent Node Chat Server', function() {
   afterEach(function() {
     dbConnection.end();
   });
-
+  
   it('Should insert posted messages to the DB', function(done) {
     // Post the user to the chat server.
+    console.log('--------------->before users post request');
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/users',
       json: { username: 'Valjean' }
-    }, function () {
+    }, function (error, response, body) {
+      console.log(error);
       // Post a message to the node chat server:
+      console.log('****before the messages post request****');
       request({
         method: 'POST',
         uri: 'http://127.0.0.1:3000/classes/messages',
@@ -44,6 +46,7 @@ describe('Persistent Node Chat Server', function() {
           roomname: 'Hello'
         }
       }, function () {
+        console.log('****this is before the database call****');
         // Now if we look in the database, we should find the
         // posted message there.
 
@@ -54,6 +57,7 @@ describe('Persistent Node Chat Server', function() {
 
         dbConnection.query(queryString, queryArgs, function(err, results) {
           // Should have one result:
+          console.log(results);
           expect(results.length).to.equal(1);
 
           // TODO: If you don't have a column named text, change this test.

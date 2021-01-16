@@ -3,7 +3,10 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) { // a function which handles a get request for all messages 
-      models.get();
+      models.messages.get((messageArray)=>{
+        // console.log(messageArray);
+        res.send(messageArray);
+      });
       //console.log(req);
 
       //app /classes
@@ -14,10 +17,6 @@ module.exports = {
       //model will send information back to controller?
       //controller will add information to response object and send back to client (http)
 
-
-
-      // res.status(200).send('THIS IS OUR GET MESSAGE');
-      // res.send('')
     }, 
     post: function (req, res) { // a function which handles posting a message to the database
       //we should console.log the request object
@@ -40,8 +39,14 @@ module.exports = {
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+
+    },
+    post: function (req, res) {
+      models.users.post(req.body, ()=>{
+        res.send('user posted');
+      });
+    }
   }
 };
 
