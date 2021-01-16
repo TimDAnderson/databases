@@ -1,12 +1,13 @@
+const connection = require('../db');
 var db = require('../db');
-
+//var mysql = require('mysql');
 
 module.exports = {
   messages: {
     get: function () { // a function which produces all the messages
       //this is going to be the sql read from database section
 
-      db.connect();
+      //db.connect();
 
       db.query('select * from users');
 
@@ -20,19 +21,34 @@ module.exports = {
     post: function (messageObject, cb) { // a function which can be used to insert a message into the database
       
       //the post is going to have to do two writes to the database
-      //1: if username doesnt exist in user table
-      //2: write to user table inside of data base <- This adds a new user!
+      //insert ignore username into users table
+      //query for ID out of users table
+      //insert message into messages table
 
-      //3: if message is defined in messageObject
-      //4: query user table to get ID for username
-      //5: once we know the user ID we can use it to write to message table our user_ID
+      //console.log(db.prototype);
 
-      db.connect();
-      db.query(`select username from users where users = '${messageObject.username}`, (error, results, fields)=>{
+      // db.connect();
+      db.query(`insert ignore into users (username) values ('${messageObject.username}')`, (error, results, fields)=>{
         if (error) {
           throw error;
         } else {
-          console.log();
+          // console.log('THIS IS RESULTS::::::  ' + JSON.stringify(results));
+          //console.log(`THIS IS FIELDS::::::: ${JSON.Stringify(fields)}`);
+          db.query(`select ID from users where username = '${messageObject.username}'`, (error, results, fields)=>{
+            if (error) {
+              throw error;
+            } else {
+              console.log(results[0].ID);
+              let userID = results[0].ID;
+              db.query(`insert into messages (roomname, messageText, user_ID) values ('${messageObject.roomname}', '${messageObject.message}', '${userID}')`, (error, results, fields)=>{
+                if (error) {
+                  throw error;
+                } else {
+                  console.log(results);
+                }
+              });
+            }
+          });
         }
         
       });
@@ -40,7 +56,7 @@ module.exports = {
 
       // db.query(`insert into users (username) values ('${messageObject.username}')` );
 
-      db.end();
+      //db.end();
       cb();
     } 
   },

@@ -29,7 +29,7 @@ module.exports = {
 
       //send req.body to model
       models.messages.post(req.body, ()=>{
-        res.send('we recieved the request');
+        res.send('message recieved');
       });
 
 
