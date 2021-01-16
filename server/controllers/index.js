@@ -1,12 +1,24 @@
+const { Message } = require('../db');
 var models = require('../models');
 
 module.exports = {
   messages: {
     get: function (req, res) { // a function which handles a get request for all messages 
-      models.messages.get((messageArray)=>{
-        // console.log(messageArray);
-        res.send(messageArray);
-      });
+
+      //working code
+      // models.messages.get((messageArray)=>{
+      //   // console.log(messageArray);
+      //   res.send(messageArray);
+      // });
+      Message.findAll({ include: [User]})
+        .complete(function(err, results) {
+          res.json(results);
+        });
+
+
+
+
+
       //console.log(req);
 
       //app /classes

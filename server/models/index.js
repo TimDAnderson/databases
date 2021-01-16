@@ -1,11 +1,24 @@
 const connection = require('../db');
 var db = require('../db');
+
 //var mysql = require('mysql');
+
+
+
 
 module.exports = {
   messages: {
     get: function (cb) { // a function which produces all the messages
       //this is going to be the sql read from database section
+      
+      //refactor
+      // const users = User.findAll();
+      // //console.log(users.every(user => user instanceof User)); // true
+      // console.log("All users:", JSON.stringify(users, null, 2));
+
+
+
+
 
       //db.connect();
 
@@ -49,46 +62,69 @@ module.exports = {
       //console.log(db.prototype);
 
       // db.connect();
-      db.query(`insert ignore into users (username) values ('${messageObject.username}')`, (error, results, fields)=>{
-        if (error) {
-          throw error;
-        } else {
-          db.query(`select ID from users where username = '${messageObject.username}'`, (error, results, fields)=>{
-            if (error) {
-              throw error;
-            } else {
-              // console.log(results[0].ID);
-              let userID = results[0].ID;
-              db.query(`insert into messages (roomname, messageText, user_ID) values ('${messageObject.roomname}', '${messageObject.message}', '${userID}')`, (error, results, fields)=>{
-                if (error) {
-                  throw error;
-                } else {
-                  cb();
-                  
-                }
-              });
-            }
+      db.User.sync()
+        .then(function() {
+          return db.User.create({username: messageObject.username});
+        })
+        .then (function() {
+          return db.User.findAll ({
+            attributes: ['ID'], 
+            where: {username: messageObject.username}
           });
-        }
-        
-      });
-      
-    } 
-  },
+        })
+        .then(function (table) {
+          table.forEach(function(user) {
+            console.log(user.username + ' exists');
+          });
+          // messages.create({
+          //   roomname: messageObject.roomname,
+          //   messageText: messageObject.message,
+          //   user_ID: id
+          // })
 
-  users: {
-    // Ditto as above.
-    get: function () {},
-    post: function (usernameObject, cb) {
-      db.query(`insert ignore into users (username) values ('${usernameObject.username}')`, (error, results, fields) => {
-        if (error) {
-          throw error;
-        } else {
-          console.log(results);
-          cb();
-        }
-      });
+        });
+
+
+      //     db.query(`insert ignore into users (username) values ('${messageObject.username}')`, (error, results, fields)=>{
+      //       if (error) {
+      //         throw error;
+      //       } else {
+      //         db.query(`select ID from users where username = '${messageObject.username}'`, (error, results, fields)=>{
+      //           if (error) {
+      //             throw error;
+      //           } else {
+      //             // console.log(results[0].ID);
+      //             let userID = results[0].ID;
+      //             db.query(`insert into messages (roomname, messageText, user_ID) values ('${messageObject.roomname}', '${messageObject.message}', '${userID}')`, (error, results, fields)=>{
+      //               if (error) {
+      //                 throw error;
+      //               } else {
+      //                 cb();
+                      
+      //               }
+      //             });
+      //           }
+      //         });
+      //       }
+            
+      //     });
+          
+    //   } 
+    },
+
+    users: {
+      // Ditto as above.
+      get: function () {},
+      post: function (usernameObject, cb) {
+        db.query(`insert ignore into users (username) values ('${usernameObject.username}')`, (error, results, fields) => {
+          if (error) {
+            throw error;
+          } else {
+            console.log(results);
+            cb();
+          }
+        });
+      }
     }
   }
 };
-
