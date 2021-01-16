@@ -4,30 +4,19 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) { // a function which handles a get request for all messages 
-
       //working code
-      // models.messages.get((messageArray)=>{
-      //   // console.log(messageArray);
-      //   res.send(messageArray);
-      // });
-      Message.findAll({ include: [User]})
-        .complete(function(err, results) {
-          res.json(results);
-        });
+      models.messages.get((messageArray)=>{
+        // console.log(messageArray);
+        res.send(messageArray);
+      });
 
 
+      //orm attempt
+      // Message.findAll({ include: [User]})
+      //   .complete(function(err, results) {
+      //     res.json(results);
+      //   });
 
-
-
-      //console.log(req);
-
-      //app /classes
-      //routes /messages
-      //controller/index get request
-      //hold off and send to model
-      //model is going to read from the database
-      //model will send information back to controller?
-      //controller will add information to response object and send back to client (http)
 
     }, 
     post: function (req, res) { // a function which handles posting a message to the database
@@ -42,10 +31,6 @@ module.exports = {
       models.messages.post(req.body, ()=>{
         res.send('message recieved');
       });
-
-
-
-      
     } 
   },
 
