@@ -29,6 +29,7 @@ CREATE TABLE messages (
 /*  Execute this file from the command line by typing:
  *    mysql -u root < server/schema.sql
  *  to create the database and the tables.*/
+ 
 
 -- select * from users inner join messages on users.id = messages.user_ID;
 -- insert into messages (roomname, messageText, user_ID) values ('lobby', 'Hello World', 2)
