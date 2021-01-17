@@ -4,18 +4,18 @@ CREATE DATABASE chat;
 USE chat;
 
 CREATE TABLE users (
-  ID INT AUTO_INCREMENT NOT NULL,
-  username varchar(50) UNIQUE,
+  ID INT NOT NULL AUTO_INCREMENT,
+  username varchar(50) UNIQUE NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE messages (
-  ID INT AUTO_INCREMENT NOT NULL,
+  ID INT NOT NULL AUTO_INCREMENT,
   roomname varchar(50),
   messageText varchar(50),
-  user_ID INT,
+  userId INT,
   PRIMARY KEY (ID), 
-  FOREIGN KEY (user_ID) REFERENCES users(ID)
+  FOREIGN KEY (userId) REFERENCES users(ID)
 );
 
 
